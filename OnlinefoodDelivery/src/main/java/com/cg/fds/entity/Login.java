@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.*;
 
 	@Entity
 	@Table(name ="login")
@@ -19,40 +20,41 @@ import javax.validation.constraints.Size;
 		
 		//fields
 		@Id
-		@GeneratedValue(strategy = GenerationType.AUTO)
-		@Column(name="user_id", unique = true, length =50, nullable = false) // added this line
-		
+		//@GeneratedValue(strategy = GenerationType.AUTO)
+		@Column(name="user_id", unique = true, length =50, nullable = false) 
 		@NotEmpty(message = "Please enter userId")
-		//@Size(min=3, message="userid should have atleast 3 char")
-		private String userId;   //changed both int to string and userid to userId
+		private String userId;   
 		
 		@Column(name="user_name", unique = true, length = 50, nullable = false)
-		@NotEmpty
-		@Size(min=3, message=" username should have atleast 3 char")
+		@NotEmpty(message =" Please enter a username")
 		private String userName;
 		
-		@Column(name="password" , unique = true, length =50, nullable = false)
-		@NotEmpty
-		@Size(min=8, message="password should have atleast 3 char")
+		@NotEmpty(message = "please enter your password")
+		@Size(min=3, message="password should have atleast 3 char")
 		private String password;
+		
+		@Column(name ="role")
+		@NotEmpty(message ="please enter your role")
+		private String role;
 		
 		//Constructors
 		
 		public Login() {
 			
 		}
-		public Login(String userId, String userName, String password) {
+		public Login(String userId, String userName, String password, String role) {
 			
 			super();
-			this.userId=userId;  //added this line
+			this.userId=userId;  
 			this.userName = userName;
 			this.password = password;
+			this.role=role; 
 		}
-		public String getUserid() {    //int to string 
-			return userId;             //userid to userId
+		public String getUserid() {     
+			return userId;            
 		}
-		public void setUserid(String userid) {  // i - s
-			this.userId = userid;               //id to Id
+		public void setUserid(String userid) {  
+			this.userId = userid;               
 		}
 		public String getUserName() {
 			return userName;
@@ -65,16 +67,17 @@ import javax.validation.constraints.Size;
 		}
 		public void setPassword(String password) {
 			this.password = password;
+		} 
+		public void setRole(String role) {
+			this.role = role;
 		}
-	//	public String getEmail() {
-			
-		//	return null;
-		//}
+		public String getRole() {
+			return role;
+		}
 		public void setLoggedIn(boolean b) {
-					}
+		}
 				
-		
-		
+			
 	}
 
 

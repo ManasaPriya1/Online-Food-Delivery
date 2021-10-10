@@ -1,8 +1,9 @@
-/*
+
 package com.cg.fds.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.Disabled;
@@ -21,44 +22,50 @@ public class BillServiceTest {
 	IBillService billService;
 
 	@Test
+	@Disabled
 	void testGetAllBill() {
 		
 		//Object billService;
 		List<Bill>	 bill  = billService.getAllBill();
-		assertEquals(12, bill.size());  //counting 
-		assertEquals("",  bill.get(1).getBillId());
-		assertEquals("", bill.get(1).getBillDate());
-		assertEquals("", bill.get(1).getBillOrder());
+		assertEquals(9, bill.size());  //counting 
+		assertEquals(3,  bill.get(0).getBillId());
+		assertEquals(LocalDateTime.of(2021,10,6,11,43,39,284), bill.get(0).getBillDate());
+		assertEquals(200, bill.get(0).getTotalCost());
+		assertEquals(2, bill.get(0).getTotalItem());
 		}
 	@Test
-	@Disabled
+	//@Disabled
 	void testGetBillByBillId() throws BillNotFoundException  {
-		Bill bill = billService.getBillById(0);
+		Bill bill = billService.getBillById(3);
 	
-		assertEquals("0", bill.getBillId());	
+		assertEquals(3, bill.getBillId());	
 	} 
 	@Test
 	@Disabled
 	void testAddBill() {
 		
-		Bill bill = new Bill(0, null, 0, 0);
-		Bill	newBill= billService.addBill(bill);
-		assertEquals("monusha@gmail.com" , newBill.getBillId());
-		assertEquals("Monusha", newBill.getBillId());
-		//assertEquals("Monusha234", newLogin.getPassword());
+		Bill bill = new Bill(1, LocalDateTime.of(2021,10,10,10,28,29,455), 300,5);
+		Bill newBill= billService.addBill(bill);
+		assertEquals(1, newBill.getBillId());
+		assertEquals(LocalDateTime.of(2021,10,10,10,28,29,455), newBill.getBillDate());
+		assertEquals(300, newBill.getTotalCost());
+		assertEquals(5, newBill.getTotalItem());
+		 
 		} 
 	@Test
-	//@Disabled
+	@Disabled
 	void testRemoveBill() {
 		Bill bill = billService.removeBill(0);
-		assertEquals("", bill.getBillId());
+		assertEquals(0, bill.getBillId());
 	}
 	@Test
-	//@Disabled
+	@Disabled
 	void testViewBills() {
-		List<Bill> bill = billService.viewBills(null);
-		assertEquals("", ((Bill) bill).getBillId());
-		assertEquals("", bill.get(0));
+		List<Bill> bill = billService.viewBills();
+		assertEquals(4,bill.get(1).getBillId());
+		assertEquals(LocalDateTime.of(2021, 10,3,8,23,32,482), bill.get(1).getBillDate());
+		assertEquals(1000, bill.get(1).getTotalCost());
+		assertEquals(5,bill.get(1).getTotalItem());
 	}
 	
 
@@ -66,4 +73,3 @@ public class BillServiceTest {
 	
 }
  
-*/

@@ -13,11 +13,11 @@ package com.cg.fds.exception;
 		public ResponseEntity<LoginErrorResponse> handleException(LoginNotFoundException exception) {
 			LoginErrorResponse error = new LoginErrorResponse();
 			
-			error.setStatus(HttpStatus.NOT_FOUND.value());
+			error.setStatus(HttpStatus.UNAUTHORIZED.value());
 			error.setMessage(exception.getMessage());
 			error.setTimeStamp(System.currentTimeMillis());
 			
-			return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);  //404 Not found
+			return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);  //404 Not found
 		}
 
 		@ExceptionHandler

@@ -42,35 +42,34 @@ public class LoginServiceMockitoTest {
 		}
 		@Test
 		void testGetLoginByUserId() throws LoginNotFoundException {
-			
-			Login login = new Login("harsh@gmail.com", "Harsh", "Harsh1234");
-			Mockito.when(loginDao.findById("harsh@gmail.com")).thenReturn(Optional.of(login));
-			Login l= loginService.getLoginById("harsh@gmail.com");
-			assertEquals("harsh@gmail.com", l.getUserid());
-			assertEquals("Harsh", l.getUserName());
+			Login login =new Login("priya.manasa@gmail.com","ManasaPriya", "Manasa123", "customer");
+			Mockito.when(loginDao.findById("priya.manasa@gmail.com")).thenReturn(Optional.of(login));
+			Login l= loginService.getLoginById("priya.manasa@gmail.com");
+			assertEquals("priya.manasa@gmail.com", l.getUserid());
+			assertEquals("ManasaPriya", l.getUserName());
 		}
 		@Test
 		void testGetAllLogin() {
-			Login l1 = new Login("madhura@gmail.com", "madhura12", "smadhu123");
-			Login l2 = new Login("manasa2@gmail.com",  "manasa12", "manasa23");
+			Login l1 = new Login("madhurya@gmail.com", "Madhurya", "Madhurya23", "customer");
+			Login l2 = new Login("priya.manasa@gmail.com","ManasaPriya", "Manasa123", "customer");
 			List<Login> loginList = new ArrayList<>();
 			loginList.add(l1);
 			loginList.add(l2);
 			Mockito.when(loginDao.findAll()).thenReturn(loginList);
 			List<Login> login = loginService.getAllLogin();
 			assertEquals(2, login.size());
-			assertEquals("madhura@gmail.com", login.get(0).getUserid());
-			assertEquals("madhura12", login.get(0).getUserName());
-			assertEquals("manasa2@gmail.com", login.get(1).getUserid());
-			assertEquals("manasa12", login.get(1).getUserName());
+			assertEquals("madhurya@gmail.com", login.get(0).getUserid());
+			assertEquals("Madhurya", login.get(0).getUserName());
+			assertEquals("priya.manasa@gmail.com", login.get(1).getUserid());
+			assertEquals("ManasaPriya", login.get(1).getUserName());
 		}  
 		@Test
 		void testAddLogin() {
-			Login login = new Login("seemapapu2@gmail.com", "seema12", "seema34");
+			Login login = new Login("hemalatha@gmail.com", "HemaLatha", "Hemapapu1", "customer");
 			Mockito.when(loginDao.save(login)).thenReturn(login);
 			Login newLogin = loginService.addLogin(login);
-			assertEquals("seemapapu2@gmail.com", newLogin.getUserid());
-			assertEquals("seema12", newLogin.getUserName());
+			assertEquals("hemalatha@gmail.com", newLogin.getUserid());
+			assertEquals("HemaLatha", newLogin.getUserName());
 		}  
 		
 }	

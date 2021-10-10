@@ -2,17 +2,15 @@ package com.cg.fds.service;
 
 import java.util.List;
 import java.util.Optional;
-/*
+
 import org.apache.logging.log4j.LogManager;
-/*
-import org.hibernate.internal.log.UnsupportedLogger_.logger; */
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cg.fds.dao.ILoginDao;
 import com.cg.fds.dto.LoginDto;
 import com.cg.fds.entity.Login;
-import com.cg.fds.exception.InvalidCredentialsException;
 import com.cg.fds.exception.LoginFoundException;
 import com.cg.fds.exception.LoginNotFoundException;
 
@@ -21,8 +19,8 @@ public  class LoginServiceImpl implements ILoginService {
 
 	@Autowired
 	ILoginDao loginDao;
-/*
-	private static Logger Logger = LogManager.getLogger(); */
+	
+	private static Logger logger = LogManager.getLogger();
 
 	@Override
 	public List<Login> getAllLogin() {
@@ -30,8 +28,8 @@ public  class LoginServiceImpl implements ILoginService {
 	}
 
 	@Override
-	public Login getLoginById(String id) throws LoginNotFoundException {    // int - String
-		Optional<Login> login = loginDao.findById(id);               //findById(id);
+	public Login getLoginById(String id) throws LoginNotFoundException {   
+		Optional<Login> login = loginDao.findById(id);               
 		if (!login.isPresent()) {
 			throw new LoginNotFoundException("Customer not found with given userid " + id);
 		}
@@ -48,33 +46,39 @@ public  class LoginServiceImpl implements ILoginService {
 	}
 
 	@Override
-	public LoginDto login(Login login) throws LoginNotFoundException, InvalidCredentialsException {
-		Optional<Login> dbLogin = loginDao.findByUserName(login.getUserName());
+	public LoginDto login(Login login) throws  LoginNotFoundException {
+		Optional<Login> dbLogin = loginDao.findById(login.getUserid());
 		if (!dbLogin.isPresent()) {
-			throw new LoginFoundException("Customer not found with given userName " + login.getUserName());
+			throw new LoginNotFoundException("Customer not found with given userId " + login.getUserid());
 		}
 
 		Login l = dbLogin.get();
 		LoginDto loginDto = new LoginDto();
 
-		if (login.getPassword().equals(l.getPassword()) && login.getUserName().equals(l.getUserName())) {
-
+		if (login.getPassword().equals(l.getPassword()) && login.getUserName().equals(l.getUserName()) && login.getRole().equals(l.getRole())) {
+			//set isLoggedIn flag to true
 			l.setLoggedIn(true);
 			loginDao.save(l);
 			loginDto.setUserName(l.getUserName());
+			loginDto.setUserId(l.getUserid());
+			loginDto.setrole(l.getRole());
 			loginDto.setLoggedIn(true);
+			
+			return loginDto;
+
+			
 		} else {
-			throw new InvalidCredentialsException("Invalid credentials");
+			throw new LoginNotFoundException("Invalid credentials");
 		}
 
-		return loginDto;
 	}
 
 	@Override
-	public LoginDto logout(String userName) throws LoginNotFoundException {
-		Optional<Login> dbLogin = loginDao.findByUserName(userName);
+	public LoginDto logout(String userId) throws LoginNotFoundException {
+		logger.info(userId);
+		Optional<Login> dbLogin = loginDao.findById(userId);
 		if (!dbLogin.isPresent()) {
-			throw new LoginNotFoundException("Customer not found with given userName " + userName);
+			throw new LoginNotFoundException("Customer not found with given userId " + userId);
 		}
 		Login l = dbLogin.get();
 		LoginDto loginDto = new LoginDto();
@@ -87,33 +91,16 @@ public  class LoginServiceImpl implements ILoginService {
 	}
 
 	@Override
+	public LoginDto Login(com.cg.fds.entity.Login login) {
+		
+		return null;
+	}
+
+	@Override
+	public LoginDto logout(com.cg.fds.entity.Login login) {
+
+		return null;
+	} 
+
 	
-	public com.cg.fds.entity.Login getLoginById(int id) throws LoginNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public LoginDto Login(com.cg.fds.entity.Login login) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public LoginDto logout(com.cg.fds.entity.Login login) throws LoginNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*@Override
-	public LoginDto Login(com.cg.fds.entity.Login login) {
-		// TODO Auto-generated method stub
-		return null;
-	} */
-
-/*	@Override
-	public com.cg.fds.entity.Login getLoginById(String id) throws LoginNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
-	}   */
 }
